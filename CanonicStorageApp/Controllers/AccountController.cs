@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace WebApplication1.Controllers
+namespace CanonicStorageApp.Controllers
 {
     public class AccountController : Controller
     {
