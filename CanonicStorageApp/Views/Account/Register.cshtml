@@ -1,27 +1,53 @@
-﻿@model CanonicStorageApp.Models.RegisterModel
- 
-<h2>Регистрация</h2>
- 
-<form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <div>
-        <div>
-            <label asp-for="Username">Введите Login</label><br />
-            <input type="text" asp-for="Username" />
-            <span asp-validation-for="Username" />
-        </div>
-        <div>
-            <label asp-for="Password">Введите пароль</label><br />
-            <input asp-for="Password" />
-            <span asp-validation-for="Password" />
-        </div>
-        <div>
-            <label asp-for="ConfirmPassword">Повторите пароль</label><br />
-            <input asp-for="ConfirmPassword" />
-            <span asp-validation-for="ConfirmPassword" />
-        </div>
-        <div>
-            <input type="submit" value="Регистрация" />
+﻿@model CanonicStorageApp.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container" style="max-width: 600px">
+    <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="tab-login" data-mdb-toggle="pill" asp-action="Login" asp-controller="Account" role="tab"
+               aria-controls="pills-login" aria-selected="true">Login</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="tab-register" data-mdb-toggle="pill" asp-action="Register" asp-controller="Account" role="tab"
+               aria-controls="pills-register" aria-selected="false">Register</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+            <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
+                <div class="text-center mb-3">
+                    <p>Sign up:</p>
+                </div>
+
+                <!-- Username input -->
+                <div class="form-outline mb-4">
+                    <input class="form-control" type="text" id="registerUsername" asp-for="Username" />
+                    <label class="form-label" asp-for="Username">Username</label><br />
+                    <span asp-validation-for="Username" />
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                    <input class="form-control" asp-for="Password" />
+                    <label class="form-label" asp-for="Password">Password</label><br />
+                    <span asp-validation-for="Password" />
+                </div>
+
+                <!-- Repeat Password input -->
+                <div class="form-outline mb-4">
+                    <input class="form-control" asp-for="ConfirmPassword" />
+                    <label class="form-label" asp-for="ConfirmPassword">Repeat password</label><br />
+                    <span asp-validation-for="ConfirmPassword" />
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-3">Sign up</button>
+            </form>
         </div>
     </div>
-</form>
+</div>

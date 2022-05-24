@@ -1,5 +1,9 @@
-﻿@model CanonicStorageApp.Models.LoginModel
-<h2>Sing in</h2>
+﻿@model CanonicStorageApp.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="container" style="max-width: 600px">
     <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" id="tab-login" data-mdb-toggle="pill" asp-action="Login" asp-controller="Account" role="tab"
@@ -14,7 +18,10 @@
     <div class="tab-content">
         <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
             <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
-                <p class="text-center">Sign in:</p>
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
+                <div class="text-center mb-3">
+                    <p>Sign in:</p>
+                </div>
 
                 <!-- Username input -->
                 <div class="form-outline mb-4">
@@ -32,10 +39,9 @@
 
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-
-                <!-- Register buttons -->
             </form>
         </div>
     </div>
+</div>
 
 
