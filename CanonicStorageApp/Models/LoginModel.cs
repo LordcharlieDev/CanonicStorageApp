@@ -4,8 +4,8 @@ namespace CanonicStorageApp.Models
 {
     public class LoginModel
     {
-        [Required(ErrorMessage = "Не введено Login")]
-        public string Login { get; set; }
+        [Required(ErrorMessage = "Не введено Username")]
+        public string Username { get; set; }
 
         [Required(ErrorMessage = "Не введено пароль")]
         [DataType(DataType.Password)]

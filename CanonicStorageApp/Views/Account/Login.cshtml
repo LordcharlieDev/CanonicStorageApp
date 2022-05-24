@@ -1,23 +1,41 @@
 ﻿@model CanonicStorageApp.Models.LoginModel
 <h2>Sing in</h2>
+    <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="tab-login" data-mdb-toggle="pill" asp-action="Login" asp-controller="Account" role="tab"
+               aria-controls="pills-login" aria-selected="true">Login</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="tab-register" data-mdb-toggle="pill" asp-action="Register" asp-controller="Account" role="tab"
+               aria-controls="pills-register" aria-selected="false">Register</a>
+        </li>
+    </ul>
 
-<a asp-action="Register" asp-controller="Account">Регистрация</a>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+            <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+                <p class="text-center">Sign in:</p>
 
-<form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <div>
-        <div class="form-group">
-            <label asp-for="Login">Login</label>
-            <input type="text" asp-for="Login" />
-            <span asp-validation-for="Login" />
-        </div>
-        <div class="form-group">
-            <label asp-for="Password">Password</label>
-            <input asp-for="Password" />
-            <span asp-validation-for="Password" />
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Next" class="btn btn-outline-dark" />
+                <!-- Username input -->
+                <div class="form-outline mb-4">
+                    <input class="form-control" id="loginName" type="text" asp-for="Username" />
+                    <label class="form-label" asp-for="Username">Username</label>
+                    <span class="text-center" asp-validation-for="Username" />
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                    <input class="form-control" id="loginPassword" asp-for="Password" />
+                    <label class="form-label" asp-for="Password">Password</label>
+                    <span asp-validation-for="Password" />
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+                <!-- Register buttons -->
+            </form>
         </div>
     </div>
-</form>
+
+

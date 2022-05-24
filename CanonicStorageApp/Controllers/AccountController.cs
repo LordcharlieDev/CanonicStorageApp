@@ -27,10 +27,10 @@ namespace CanonicStorageApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
+                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Username && u.Password == model.Password);
                 if (user != null)
                 {
-                    await Authenticate(model.Login); // аутентификация
+                    await Authenticate(model.Username); // аутентификация
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -49,14 +49,14 @@ namespace CanonicStorageApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login);
+                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Username);
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    db.Users.Add(new User { Login = model.Login, Password = model.Password });
+                    db.Users.Add(new User { Login = model.Username, Password = model.Password });
                     await db.SaveChangesAsync();
 
-                    await Authenticate(model.Login); // аутентификация
+                    await Authenticate(model.Username); // аутентификация
 
                     return RedirectToAction("Index", "Home");
                 }
