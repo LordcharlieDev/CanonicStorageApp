@@ -3,6 +3,7 @@ using CNNCStorageDB.Data;
 using CNNCStorageDB.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -39,12 +40,15 @@ namespace CanonicStorageApp.Controllers
             return View(model);
         }
         [HttpGet]
+        [Authorize]
         public IActionResult Register()
         {
+            
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
