@@ -52,7 +52,8 @@ namespace CanonicStorageApp.Controllers
         // GET: Workers/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.PositionList = new SelectList(await _context.Positions.Include(x => x.Department).ToListAsync(), "Name", "Name"); //add
+            ViewBag.PositionList = new SelectList(await _context.Positions.Include(x => x.Department)
+                                                                          .ToListAsync(), "Name", "Name"); //add
             ViewBag.LocationList = new SelectList(await _context.Locations.ToListAsync(), "Name", "Name"); //add
             return View();
         }
@@ -141,8 +142,9 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var worker = await _context.Workers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var worker = await _context.Workers.Include(x => x.Position)
+                                               .Include(x => x.Location)
+                                               .FirstOrDefaultAsync(m => m.Id == id);
             if (worker == null)
             {
                 return NotFound();
