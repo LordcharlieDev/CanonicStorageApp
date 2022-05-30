@@ -36,7 +36,7 @@ namespace CanonicStorageApp.Controllers
             }
 
             var position = await _context.Positions.Include(x => x.Department)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                                                   .FirstOrDefaultAsync(m => m.Id == id);
             if (position == null)
             {
                 return NotFound();
@@ -61,7 +61,8 @@ namespace CanonicStorageApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                position.Department = await _context.Departments.Where(x => x.Name == position.Department.Name).FirstOrDefaultAsync(); //add
+                position.Department = await _context.Departments.Where(x => x.Name == position.Department.Name)
+                                                                .FirstOrDefaultAsync(); //add
                 _context.Add(position);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -100,7 +101,8 @@ namespace CanonicStorageApp.Controllers
             }
             if (ModelState.IsValid)
             {
-                position.Department = await _context.Departments.Where(x => x.Name == position.Department.Name).FirstOrDefaultAsync(); //add
+                position.Department = await _context.Departments.Where(x => x.Name == position.Department.Name)
+                                                                .FirstOrDefaultAsync(); //add
                 try
                 {
                     _context.Update(position);
@@ -131,8 +133,8 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var position = await _context.Positions
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var position = await _context.Positions.Include(x => x.Department)
+                                                   .FirstOrDefaultAsync(m => m.Id == id);
             if (position == null)
             {
                 return NotFound();
