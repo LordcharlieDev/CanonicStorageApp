@@ -24,9 +24,9 @@ namespace CanonicStorageApp.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-              return _context.Workers != null ? 
-                          View(await _context.Workers.ToListAsync()) :
-                          Problem("Entity set 'CNNCDbContext.Workers'  is null.");
+            return _context.Workers != null ?
+                        View(await _context.Workers.ToListAsync()) :
+                        Problem("Entity set 'CNNCDbContext.Workers'  is null.");
         }
 
         // GET: Workers/Details/5
@@ -38,8 +38,9 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var worker = await _context.Workers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var worker = await _context.Workers.Include(x => x.Position)
+                                               .Include(x => x.Location)
+                                               .FirstOrDefaultAsync(m => m.Id == id);
             if (worker == null)
             {
                 return NotFound();
@@ -49,9 +50,10 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Workers/Create
-        [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.PositionList = new SelectList(await _context.Positions.Include(x => x.Department).ToListAsync(), "Name", "Name"); //add
+            ViewBag.LocationList = new SelectList(await _context.Locations.ToListAsync(), "Name", "Name"); //add
             return View();
         }
 
@@ -60,20 +62,23 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium")] Worker worker)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location")] Worker worker)
         {
+            worker.Position = await _context.Positions.Include(x => x.Department).Where(x => x.Name == worker.Position.Name).FirstOrDefaultAsync(); //add
+            ModelState.Remove("Position.Department");
             if (ModelState.IsValid)
             {
+                worker.Location = await _context.Locations.Where(x => x.Name == worker.Location.Name).FirstOrDefaultAsync(); //add
                 _context.Add(worker);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.PositionList = new SelectList(await _context.Positions.ToListAsync(), "Name", "Name"); //add
+            ViewBag.LocationList = new SelectList(await _context.Locations.ToListAsync(), "Name", "Name"); //add
             return View(worker);
         }
 
         // GET: Workers/Edit/5
-        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Workers == null)
@@ -86,6 +91,8 @@ namespace CanonicStorageApp.Controllers
             {
                 return NotFound();
             }
+            ViewBag.PositionList = new SelectList(await _context.Positions.ToListAsync(), "Name", "Name", worker.Position.Id); //add
+            ViewBag.LocationList = new SelectList(await _context.Locations.ToListAsync(), "Name", "Name", worker.Location.Id); //add
             return View(worker);
         }
 
@@ -94,16 +101,17 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium")] Worker worker)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location")] Worker worker)
         {
             if (id != worker.Id)
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Position.Department");
+            worker.Position = await _context.Positions.Include(x => x.Department).Where(x => x.Name == worker.Position.Name).FirstOrDefaultAsync(); //add
             if (ModelState.IsValid)
             {
+                worker.Location = await _context.Locations.Where(x => x.Name == worker.Location.Name).FirstOrDefaultAsync(); //add
                 try
                 {
                     _context.Update(worker);
@@ -126,7 +134,6 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Workers/Delete/5
-        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Workers == null)
@@ -147,7 +154,6 @@ namespace CanonicStorageApp.Controllers
         // POST: Workers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Workers == null)
@@ -159,14 +165,14 @@ namespace CanonicStorageApp.Controllers
             {
                 _context.Workers.Remove(worker);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool WorkerExists(int id)
         {
-          return (_context.Workers?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Workers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

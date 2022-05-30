@@ -23,7 +23,7 @@ namespace CanonicStorageApp.Controllers
         public async Task<IActionResult> Index()
         {
             return _context.Positions != null ?
-                        View(await _context.Positions.Include(x => x.Department).ToListAsync()) :
+                        View(await _context.Positions.ToListAsync()) :
                         Problem("Entity set 'CNNCDbContext.Positions'  is null.");
         }
 
@@ -66,7 +66,7 @@ namespace CanonicStorageApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Department", "Name"); //add
+            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name"); //add
             return View(position);
         }
 
@@ -83,7 +83,7 @@ namespace CanonicStorageApp.Controllers
             {
                 return NotFound();
             }
-            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Id", "Name", position.Department.Id); //add
+            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name", position.Department.Id); //add
             return View(position);
         }
 
@@ -98,29 +98,28 @@ namespace CanonicStorageApp.Controllers
             {
                 return NotFound();
             }
-            position.Department = await _context.Departments.FindAsync(position.Department.Id); //add
-
-            //if (ModelState.IsValid)
-            //{
-            var s = ModelState.Values;
-            try
+            if (ModelState.IsValid)
             {
-                _context.Update(position);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PositionExists(position.Id))
+                position.Department = await _context.Departments.Where(x => x.Name == position.Department.Name).FirstOrDefaultAsync(); //add
+                try
                 {
-                    return NotFound();
+                    _context.Update(position);
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!PositionExists(position.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
-            //}
+            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name", position.Department.Id);
             return View(position);
         }
 
