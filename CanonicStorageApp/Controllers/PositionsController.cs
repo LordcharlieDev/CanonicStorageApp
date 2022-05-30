@@ -35,7 +35,7 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var position = await _context.Positions.Include(x => x.Department)
+            var position = await _context.Positions
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (position == null)
             {
@@ -79,11 +79,12 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var position = await _context.Positions.Include(x => x.Department).FirstOrDefaultAsync(m => m.Id == id);
+            var position = await _context.Positions.FindAsync(id);
             if (position == null)
             {
                 return NotFound();
             }
+            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Id", "Name", position.Department.Id); //add
             return View(position);
         }
 
@@ -92,15 +93,16 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Position position)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Department")] Position position)
         {
             if (id != position.Id)
             {
                 return NotFound();
             }
+            position.Department = await _context.Departments.FindAsync(position.Department.Id); //add
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     _context.Update(position);
@@ -118,7 +120,7 @@ namespace CanonicStorageApp.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             return View(position);
         }
 
