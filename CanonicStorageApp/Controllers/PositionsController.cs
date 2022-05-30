@@ -22,9 +22,9 @@ namespace CanonicStorageApp.Controllers
         // GET: Positions
         public async Task<IActionResult> Index()
         {
-              return _context.Positions != null ? 
-                          View(await _context.Positions.Include(x => x.Department).ToListAsync()) :
-                          Problem("Entity set 'CNNCDbContext.Positions'  is null.");
+            return _context.Positions != null ?
+                        View(await _context.Positions.Include(x => x.Department).ToListAsync()) :
+                        Problem("Entity set 'CNNCDbContext.Positions'  is null.");
         }
 
         // GET: Positions/Details/5
@@ -48,7 +48,7 @@ namespace CanonicStorageApp.Controllers
         // GET: Positions/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Id", "Name"); //add
+            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name"); //add
             return View();
         }
 
@@ -58,16 +58,15 @@ namespace CanonicStorageApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Department")] Position position)
-        
         {
-            position.Department = await _context.Departments.FindAsync(position.Department.Id); //add
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
+                position.Department = await _context.Departments.Where(x => x.Name == position.Department.Name).FirstOrDefaultAsync(); //add
                 _context.Add(position);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            //}
-            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Id", "Name"); //add
+            }
+            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Department", "Name"); //add
             return View(position);
         }
 
@@ -103,23 +102,24 @@ namespace CanonicStorageApp.Controllers
 
             //if (ModelState.IsValid)
             //{
-                try
+            var s = ModelState.Values;
+            try
+            {
+                _context.Update(position);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PositionExists(position.Id))
                 {
-                    _context.Update(position);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!PositionExists(position.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
             //}
             return View(position);
         }
@@ -156,14 +156,14 @@ namespace CanonicStorageApp.Controllers
             {
                 _context.Positions.Remove(position);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PositionExists(int id)
         {
-          return (_context.Positions?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Positions?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
