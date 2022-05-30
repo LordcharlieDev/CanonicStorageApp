@@ -23,7 +23,7 @@ namespace CanonicStorageApp.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Positions != null ? 
-                          View(await _context.Positions.ToListAsync()) :
+                          View(await _context.Positions.Include(x => x.Department).ToListAsync()) :
                           Problem("Entity set 'CNNCDbContext.Positions'  is null.");
         }
 
@@ -46,8 +46,9 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Positions/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Id", "Name"); //add
             return View();
         }
 
@@ -56,14 +57,17 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Position position)
+        public async Task<IActionResult> Create([Bind("Id,Name,Department")] Position position)
+        
         {
-            if (ModelState.IsValid)
-            {
+            position.Department = await _context.Departments.FindAsync(position.Department.Id); //add
+            //if (ModelState.IsValid)
+            //{
                 _context.Add(position);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            //}
+            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Id", "Name"); //add
             return View(position);
         }
 

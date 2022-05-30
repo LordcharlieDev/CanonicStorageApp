@@ -1,5 +1,6 @@
 ﻿@model CNNCStorageDB.Models.Position
 
+
 @{
     ViewData["Title"] = "Create";
 }
@@ -16,6 +17,11 @@
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Department" class="control-label"></label>
+                <select asp-for="Department.Id" class="form-control" asp-items="ViewBag.message"></select>
+                <span asp-validation-for="Department.Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
