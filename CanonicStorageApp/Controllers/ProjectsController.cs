@@ -48,17 +48,11 @@ namespace CanonicStorageApp.Controllers
         // GET: Projects/Create
         public IActionResult Create()
         {
-            //var wl = await _context.Workers.ToListAsync();
-            //ViewBag.message = new SelectList(wl, "Id", "FullInfo");
-            //var cl = new SelectList(await _context.Clients.ToListAsync(), "FullName", "FullName");
-            //ViewBag.ClientsList = cl;
-            //return View();
             var project = new Project();
             var workers = _context.Workers.ToList();
             var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName");
             ViewBag.ClientsList = cl;
             return View(new ProjectViewModel(project, workers));
-
         }
 
         // POST: Projects/Create
@@ -66,20 +60,8 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProjectViewModel projectViewModel/*[Bind("Id,Name,Budget,StartTime,EndTime,FinalPrice,Workers,Client")] Project project*/)
+        public async Task<IActionResult> Create(ProjectViewModel projectViewModel)
         {
-            //var errors = ModelState
-            //.Where(x => x.Value.Errors.Count > 0)
-            //.Select(x => new { x.Key, x.Value.Errors })
-            //.ToArray();
-            //if (ModelState.IsValid)
-            //{
-            //    _context.Add(project);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //return View(project);
-
             if (projectViewModel.SelectedWorkers.Length > 0)
             {
                 Project project = projectViewModel.Project;
@@ -130,33 +112,12 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ProjectViewModel projectViewModel /*[Bind("Id,Name,Budget,StartTime,EndTime,FinalPrice,Client,Workers")] Project project*/)
+        public async Task<IActionResult> Edit(int id, ProjectViewModel projectViewModel)
         {
             if (id != projectViewModel.Project.Id)
             {
                 return NotFound();
             }
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        _context.Update(project);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!ProjectExists(project.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
 
             if (projectViewModel.SelectedWorkers.Length > 0)
             {
@@ -195,9 +156,6 @@ namespace CanonicStorageApp.Controllers
             projectViewModel.Workers = workers;
             Array.Clear(projectViewModel.SelectedWorkers);
             return View(projectViewModel);
-
-
-            // return View(project);
         }
 
         // GET: Projects/Delete/5
@@ -208,7 +166,7 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects
+            var project = await _context.Projects.Include(x => x.Workers).Include(x => x.Client)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (project == null)
             {
