@@ -44,6 +44,14 @@
                     <label class="form-label" asp-for="ConfirmPassword">Repeat password</label><br />
                     <span asp-validation-for="ConfirmPassword" />
                 </div>
+                <div class="form-outline mb-4">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IsAdmin, new {@class = "form-check-input"})
+                        @*<input type="checkbox" class="btn-check" asp-for="IsAdmin" />*@
+                        <label class="form-check-label" asp-for="IsAdmin">Administrator</label><br />
+                    </div>
+                    <span asp-validation-for="IsAdmin" />
+                </div>
 
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-3">Sign up</button>

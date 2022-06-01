@@ -12,14 +12,29 @@ namespace CanonicStorageApp.Controllers
 {
     public class AccountController : Controller
     {
-        private CNNCDbContext db;
+        private CNNCDbContext _context;
         public AccountController(CNNCDbContext context)
         {
-            db = context;
+            _context = context;
         }
+        [Authorize]
+        private async Task<bool> IsAdmin()
+        {
+            var user = await _context.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefaultAsync();
+            if (user.IsAdmin)
+            {
+                return true;
+            }
+            return false;
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
+            if(!string.IsNullOrEmpty(User.Identity.Name))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
         [HttpPost]
@@ -28,10 +43,10 @@ namespace CanonicStorageApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Username && u.Password == model.Password);
+                User user = await _context.Users.FirstOrDefaultAsync(u => u.Login == model.Username && u.Password == model.Password);
                 if (user != null)
                 {
-                    await Authenticate(model.Username); // аутентификация
+                    await Authenticate(model.Username);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -41,10 +56,13 @@ namespace CanonicStorageApp.Controllers
         }
         [HttpGet]
         [Authorize]
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
-            
-            return View();
+            if (await IsAdmin())
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -53,33 +71,32 @@ namespace CanonicStorageApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Username);
+                User user = await _context.Users.FirstOrDefaultAsync(u => u.Login == model.Username);
                 if (user == null)
                 {
-                    // добавляем пользователя в бд
-                    db.Users.Add(new User { Login = model.Username, Password = model.Password });
-                    await db.SaveChangesAsync();
+                    _context.Users.Add(new User { Login = model.Username, Password = model.Password, IsAdmin = model.IsAdmin });
+                    await _context.SaveChangesAsync();
 
-                    await Authenticate(model.Username); // аутентификация
+                    //await Authenticate(model.Username);
 
                     return RedirectToAction("Index", "Home");
                 }
                 else
-                    ModelState.AddModelError("", "Неправильний логін або пароль");
+                    ModelState.AddModelError("", "User already exists");
             }
             return View(model);
         }
 
         private async Task Authenticate(string userName)
         {
-            // создаем один claim
+            // створюємо один claim
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
             };
-            // создаем объект ClaimsIdentity
+            // створюємо об'єкт ClaimsIdentity
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
+            // встановлення аутентифікаційних кукі
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 

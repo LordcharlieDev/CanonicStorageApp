@@ -4,15 +4,16 @@ namespace CanonicStorageApp.Models
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "Не введено Username")]
+        [Required(ErrorMessage = "Enter username")]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "Не введено пароль")]
+        [Required(ErrorMessage = "Enter password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Пароль введено неправильно")]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }
