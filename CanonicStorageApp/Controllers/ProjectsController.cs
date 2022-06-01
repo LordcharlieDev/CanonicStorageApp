@@ -46,9 +46,13 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Projects/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var wl = await _context.Workers.ToListAsync();
+            ViewBag.message = wl;
+            var cl = new SelectList(await _context.Clients.ToListAsync(), "FullName", "FullName");
+            ViewBag.ClientsList = cl;
+            return View(new Project());
         }
 
         // POST: Projects/Create
@@ -88,13 +92,16 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Budget,StartTime,EndTime,FinalPrice")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Budget,StartTime,EndTime,FinalPrice,Client,Workers")] Project project)
         {
             if (id != project.Id)
             {
                 return NotFound();
             }
-
+            var errors = ModelState
+            .Where(x => x.Value.Errors.Count > 0)
+            .Select(x => new { x.Key, x.Value.Errors })
+            .ToArray();
             if (ModelState.IsValid)
             {
                 try

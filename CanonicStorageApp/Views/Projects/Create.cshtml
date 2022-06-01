@@ -18,6 +18,16 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Client" class="control-label"></label>
+                <select asp-for="Client.FullName" class="form-control" asp-items="ViewBag.ClientsList"></select>
+                <span asp-validation-for="Client.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Workers" class="control-label"></label>
+                <select asp-for="Workers" class="form-control" asp-items='new SelectList(ViewBag.message, "Id", "FullInfo")'></select>
+                <span asp-validation-for="Workers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -29,5 +39,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
