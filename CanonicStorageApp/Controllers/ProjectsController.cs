@@ -35,13 +35,12 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects
+            var project = await _context.Projects.Include(x => x.Workers)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (project == null)
             {
                 return NotFound();
             }
-
             return View(project);
         }
 
