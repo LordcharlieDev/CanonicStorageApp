@@ -5,5 +5,10 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <a class="btn" asp-area="" asp-controller="Departments" asp-action="Index">Department</a>
+    <a class="btn" asp-area="" asp-controller="Positions" asp-action="Index">Positions</a>
+    <a class="btn" asp-area="" asp-controller="Workers" asp-action="Index">Workers</a>
+    <a class="btn" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
+    <a class="btn" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
     <input type="button" value="Logout" onclick="location.href='@Url.Action("Logout", "Account")'" />
 </div>
