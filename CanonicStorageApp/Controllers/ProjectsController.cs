@@ -54,10 +54,10 @@ namespace CanonicStorageApp.Controllers
             //ViewBag.ClientsList = cl;
             //return View();
             var project = new Project();
-            var worker = _context.Workers.ToList();
+            var workers = _context.Workers.ToList();
             var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName");
             ViewBag.ClientsList = cl;
-            return View(new ProjectViewModel(project, worker));
+            return View(new ProjectViewModel(project, workers));
 
         }
 
@@ -93,8 +93,12 @@ namespace CanonicStorageApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            projectViewModel.Project.Client = await _context.Clients.Where(x => x.Id == projectViewModel.Project.Client.Id).FirstOrDefaultAsync();
+            var workers = _context.Workers.ToList();
             var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName");
             ViewBag.ClientsList = cl;
+            projectViewModel.Workers = workers;
+            Array.Clear(projectViewModel.SelectedWorkers);
             return View(projectViewModel);
         }
 
@@ -106,12 +110,19 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects.FindAsync(id);
+            var project = await _context.Projects.Where(x => x.Id == id)
+                                                 .Include(x => x.Workers)
+                                                 .Include(x => x.Client)
+                                                 .FirstOrDefaultAsync();
             if (project == null)
             {
                 return NotFound();
             }
-            return View(project);
+
+            var workers = _context.Workers.ToList();
+            var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName");
+            ViewBag.ClientsList = cl;
+            return View(new ProjectViewModel(project, workers));
         }
 
         // POST: Projects/Edit/5
@@ -119,15 +130,46 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Budget,StartTime,EndTime,FinalPrice,Client,Workers")] Project project)
+        public async Task<IActionResult> Edit(int id, ProjectViewModel projectViewModel /*[Bind("Id,Name,Budget,StartTime,EndTime,FinalPrice,Client,Workers")] Project project*/)
         {
-            if (id != project.Id)
+            if (id != projectViewModel.Project.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+            //        _context.Update(project);
+            //        await _context.SaveChangesAsync();
+            //    }
+            //    catch (DbUpdateConcurrencyException)
+            //    {
+            //        if (!ProjectExists(project.Id))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+            if (projectViewModel.SelectedWorkers.Length > 0)
             {
+                Project project = projectViewModel.Project;
+                project.Client = await _context.Clients.Where(x => x.Id == projectViewModel.Project.Client.Id).FirstOrDefaultAsync();
+                foreach (var item in projectViewModel.SelectedWorkers)
+                {
+                    Worker worker = await _context.Workers.Where(x => x.Id == item)
+                                                          .Include(x => x.Position)
+                                                          .Include(x => x.Location)
+                                                          .FirstOrDefaultAsync();
+                    project.Workers.Add(worker);
+                }
                 try
                 {
                     _context.Update(project);
@@ -146,7 +188,16 @@ namespace CanonicStorageApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(project);
+            projectViewModel.Project.Client = await _context.Clients.Where(x => x.Id == projectViewModel.Project.Client.Id).FirstOrDefaultAsync();
+            var workers = _context.Workers.ToList();
+            var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName");
+            ViewBag.ClientsList = cl;
+            projectViewModel.Workers = workers;
+            Array.Clear(projectViewModel.SelectedWorkers);
+            return View(projectViewModel);
+
+
+            // return View(project);
         }
 
         // GET: Projects/Delete/5
