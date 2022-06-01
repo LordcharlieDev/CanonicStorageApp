@@ -35,8 +35,8 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Clients
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var client = await _context.Clients.Include(x => x.Projects)
+                                               .FirstOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
                 return NotFound();

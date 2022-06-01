@@ -33,6 +33,11 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Phone)
+        </dd>        <dt class = "col-sm-2">
+            @Html.DisplayName("Number of projects")
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Projects.Count)
         </dd>
     </dl>
 </div>
