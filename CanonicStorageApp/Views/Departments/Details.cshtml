@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Department</h4>
+    <h3>Department</h3>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -15,10 +15,19 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
+        </dd>        <dt class = "col-sm-2">
+            @Html.DisplayName("Number of positions")
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Positions.Count)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="row m-2">
+    <div class="col-md-2">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary w-75">Edit</a>
+    </div>
+    <div class="col-md-2">
+        <a asp-action="Index" class="btn btn-secondary w-75">View all</a>
+    </div>
 </div>

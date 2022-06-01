@@ -35,7 +35,7 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Departments
+            var department = await _context.Departments.Include(x => x.Positions)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (department == null)
             {
