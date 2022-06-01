@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CNNCStorageDB.Models.User
+@{
     ViewData["Title"] = "Home";
 }
 
@@ -10,5 +11,9 @@
     <a class="btn" asp-area="" asp-controller="Workers" asp-action="Index">Workers</a>
     <a class="btn" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
     <a class="btn" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
+    @if (@Model.IsAdmin)
+    {
+        <a class="btn" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+    }
     <input type="button" value="Logout" onclick="location.href='@Url.Action("Logout", "Account")'" />
 </div>
