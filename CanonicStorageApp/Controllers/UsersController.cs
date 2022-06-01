@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CNNCStorageDB.Data;
 using CNNCStorageDB.Models;
 using Microsoft.AspNetCore.Authorization;
+using CanonicStorageApp.Models;
 
 namespace CanonicStorageApp.Controllers
 {
@@ -43,34 +44,16 @@ namespace CanonicStorageApp.Controllers
             }
             return RedirectToAction("Index", "Home");
 
-            
+
         }
-
-        /*// GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Users == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }*/
 
         // GET: Users/Create
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            if(await IsAdmin())
+            if (await IsAdmin())
             {
-                return View();
+                return View(new RegisterViewModel());
             }
             return RedirectToAction("Index", "Home");
         }
@@ -81,17 +64,27 @@ namespace CanonicStorageApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Login,Password,IsAdmin")] User user)
+        public async Task<IActionResult> Create(RegisterViewModel registerViewModel)
         {
             if (await IsAdmin())
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(user);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    var user = await _context.Users.Where(x => x.Login == registerViewModel.Username).FirstOrDefaultAsync();
+                    if (user == null)
+                    {
+                        User newUser = new User { Login = registerViewModel.Username, Password = registerViewModel.Password, IsAdmin = registerViewModel.IsAdmin };
+                        _context.Add(newUser);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "User already exists");
+                    }
+
                 }
-                return View(user);
+                return View(registerViewModel);
             }
             return RedirectToAction("Index", "Home");
         }
@@ -131,7 +124,11 @@ namespace CanonicStorageApp.Controllers
                 {
                     return NotFound();
                 }
-
+                var u = await _context.Users.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
+                if (User.Identity.Name == u.Login)
+                {
+                    ModelState.AddModelError("", "Not access");
+                }
                 if (ModelState.IsValid)
                 {
                     try
@@ -187,6 +184,11 @@ namespace CanonicStorageApp.Controllers
         {
             if (await IsAdmin())
             {
+                var u = await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
+                if (User.Identity.Name == u.Login)
+                {
+                    return Problem("Unable to delete a user who is authorized in the application", null, null, "Not access");
+                }
                 if (_context.Users == null)
                 {
                     return Problem("Entity set 'CNNCDbContext.Users'  is null.");
@@ -206,7 +208,7 @@ namespace CanonicStorageApp.Controllers
         [Authorize]
         private bool UserExists(int id)
         {
-          return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
