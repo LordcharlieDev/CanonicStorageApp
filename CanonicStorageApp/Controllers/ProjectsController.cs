@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CNNCStorageDB.Data;
 using CNNCStorageDB.Models;
+using CanonicStorageApp.Models;
 
 namespace CanonicStorageApp.Controllers
 {
@@ -22,9 +23,9 @@ namespace CanonicStorageApp.Controllers
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-              return _context.Projects != null ? 
-                          View(await _context.Projects.ToListAsync()) :
-                          Problem("Entity set 'CNNCDbContext.Projects'  is null.");
+            return _context.Projects != null ?
+                        View(await _context.Projects.ToListAsync()) :
+                        Problem("Entity set 'CNNCDbContext.Projects'  is null.");
         }
 
         // GET: Projects/Details/5
@@ -35,7 +36,7 @@ namespace CanonicStorageApp.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects.Include(x => x.Workers)
+            var project = await _context.Projects.Include(x => x.Workers).Include(x => x.Client)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (project == null)
             {
@@ -45,13 +46,19 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Projects/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            var wl = await _context.Workers.ToListAsync();
-            ViewBag.message = wl;
-            var cl = new SelectList(await _context.Clients.ToListAsync(), "FullName", "FullName");
+            //var wl = await _context.Workers.ToListAsync();
+            //ViewBag.message = new SelectList(wl, "Id", "FullInfo");
+            //var cl = new SelectList(await _context.Clients.ToListAsync(), "FullName", "FullName");
+            //ViewBag.ClientsList = cl;
+            //return View();
+            var project = new Project();
+            var worker = _context.Workers.ToList();
+            var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName");
             ViewBag.ClientsList = cl;
-            return View(new Project());
+            return View(new ProjectViewModel(project, worker));
+
         }
 
         // POST: Projects/Create
@@ -59,15 +66,36 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Budget,StartTime,EndTime,FinalPrice")] Project project)
+        public async Task<IActionResult> Create(ProjectViewModel projectViewModel/*[Bind("Id,Name,Budget,StartTime,EndTime,FinalPrice,Workers,Client")] Project project*/)
         {
-            if (ModelState.IsValid)
+            //var errors = ModelState
+            //.Where(x => x.Value.Errors.Count > 0)
+            //.Select(x => new { x.Key, x.Value.Errors })
+            //.ToArray();
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(project);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //return View(project);
+
+            if (projectViewModel.SelectedWorkers.Length > 0)
             {
+                Project project = projectViewModel.Project;
+                project.Client = await _context.Clients.Where(x => x.Id == projectViewModel.Project.Client.Id).FirstOrDefaultAsync();
+                foreach (var item in projectViewModel.SelectedWorkers)
+                {
+                    Worker worker = await _context.Workers.Where(x => x.Id == item).FirstOrDefaultAsync();
+                    project.Workers.Add(worker);
+                }
                 _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(project);
+            var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName");
+            ViewBag.ClientsList = cl;
+            return View(projectViewModel);
         }
 
         // GET: Projects/Edit/5
@@ -97,10 +125,7 @@ namespace CanonicStorageApp.Controllers
             {
                 return NotFound();
             }
-            var errors = ModelState
-            .Where(x => x.Value.Errors.Count > 0)
-            .Select(x => new { x.Key, x.Value.Errors })
-            .ToArray();
+
             if (ModelState.IsValid)
             {
                 try
@@ -156,14 +181,14 @@ namespace CanonicStorageApp.Controllers
             {
                 _context.Projects.Remove(project);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProjectExists(int id)
         {
-          return (_context.Projects?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Projects?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

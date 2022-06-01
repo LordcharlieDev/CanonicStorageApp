@@ -10,47 +10,47 @@
     <h4>Project</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Budget)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Budget)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EndTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FinalPrice)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FinalPrice)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Workers)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Client)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Workers)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.FullName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Workers)
         </dt>
-        <dd class = "col-sm-10">
-            <select class="form-control" asp-items='new SelectList(Model.Workers.ToList(), "Id", "FullInfo")' multiple></select>
+        <dd class="col-sm-10">
+            @Html.ListBoxFor(model => model.Workers, new MultiSelectList(Model.Workers, "Id", "FullInfo"), new { @class = "form-control"})
         </dd>
     </dl>
 </div>
