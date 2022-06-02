@@ -34,9 +34,16 @@
                 @Html.DisplayNameFor(model => model.Premium)
             </th>
             <th>
-                <a asp-action="Create" class="btn btn-sm btn-success">
-                    <i class="fa-solid fa-plus"></i> New
-                </a>
+                <div class="row">
+                    <div class="col">
+                        <a asp-action="Create" class="btn btn-sm btn-success">
+                            <i class="fa-solid fa-plus"></i> New
+                        </a>
+                    </div>
+                    <div class="col">
+                        <button class="btn m-0 p-0" onclick='OpenPrintTab("Workers","Print")'><i class="fa-solid fa-print"></i> Print</button>
+                    </div>
+                </div>
             </th>
         </tr>
     </thead>

@@ -22,9 +22,16 @@
                 @Html.DisplayNameFor(model => model.Phone)
             </th>
             <th>
-                <a asp-action="Create" class="btn btn-sm btn-success">
-                    <i class="fa-solid fa-plus"></i> New
-                </a>
+                <div class="row">
+                    <div class="col">
+                        <a asp-action="Create" class="btn btn-sm btn-success">
+                            <i class="fa-solid fa-plus"></i> New
+                        </a>
+                    </div>
+                    <div class="col">
+                        <button class="btn m-0 p-0" onclick='OpenPrintTab("Clients","Print")'><i class="fa-solid fa-print"></i> Print</button>
+                    </div>
+                </div>
             </th>
         </tr>
     </thead>
@@ -45,9 +52,18 @@
                     @Html.DisplayFor(modelItem => item.Phone)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn"><i class="fa-solid fa-square-pen"></i> Edit</a>|
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn"><i class="fa-solid fa-circle-info"></i> Details</a>|
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn"><i class="fa-solid fa-trash"></i> Delete</a>
+                    <div class="row align-content-center">
+                        <div class="col">
+
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn"><i class="fa-solid fa-square-pen"></i> Edit</a>
+                        </div>
+                        <div class="col">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn"><i class="fa-solid fa-circle-info"></i> Details</a>
+                        </div>
+                        <div class="col">
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn"><i class="fa-solid fa-trash"></i> Delete</a>
+                        </div>
+                    </div>
                 </td>
             </tr>
         }
