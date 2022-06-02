@@ -4,16 +4,32 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <a class="btn" asp-area="" asp-controller="Departments" asp-action="Index">Department</a>
-    <a class="btn" asp-area="" asp-controller="Positions" asp-action="Index">Positions</a>
-    <a class="btn" asp-area="" asp-controller="Workers" asp-action="Index">Workers</a>
-    <a class="btn" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
-    <a class="btn" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
-    @if (@Model.IsAdmin)
-    {
-        <a class="btn" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-    }
-    <input type="button" value="Logout" onclick="location.href='@Url.Action("Logout", "Account")'" />
+    <div class="container offset-md-0">
+        <h2 class="display-2">Tables</h2>
+        <div class="row mt-5">
+            <div class="col">
+                <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Departments" asp-action="Index">Department</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Positions" asp-action="Index">Position</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Workers" asp-action="Index">Workers</a>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
+            </div>
+            <div class="col">
+                @if (@Model.IsAdmin)
+                {
+                    <a class="btn btn-secondary m-0 fs-4" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                }
+            </div>
+        </div>
+    </div>
 </div>

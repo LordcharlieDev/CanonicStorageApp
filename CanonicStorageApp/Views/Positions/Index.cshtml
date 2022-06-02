@@ -6,7 +6,7 @@
 
 <h1>Positions</h1>
 
-<table class="table">
+<table id="mainTable" class="table">
     <thead>
         <tr>
             <th>
@@ -16,6 +16,7 @@
                 <a asp-action="Create" class="btn btn-sm btn-success">
                     <i class="fa-solid fa-plus"></i> New
                 </a>
+                <button id="printButton" class="btn btn-sm btn-success" @*onclick="printPDF()"*@>Print</button>
             </th>
         </tr>
     </thead>
@@ -35,3 +36,15 @@
         }
     </tbody>
 </table>
+
+@section scripts
+    {
+    <script src="~/js/site.js"></script>
+    <script>
+        
+$("#printButton").click(function () {
+    window.open("@Url.Action("Index", "Positions")", "_blank",
+        "menubar=no, toolbar=no, resizable=no, top=100, left=200, width=500, height=500");
+});
+    </script>
+}

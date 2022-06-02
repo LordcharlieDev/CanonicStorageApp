@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <header>
+@*    <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Canonic Storage</a>
@@ -23,15 +23,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            @*<input class="nav-link text-dark" type="button" value="Logout" onclick="location.href='@Url.Action("Logout", "Account")'" />*@
-                        </li>
                     </ul>
                     <a class="nav-link text-dark pt-2 pb-2 pe-0 ps-0" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                 </div>
             </div>
         </nav>
-    </header>
+    </header>*@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -44,10 +41,10 @@
                 <div class="col-md-1">
                     &copy; 2022 - CanonicStorageApp@* - <a class="text-decoration-none" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
                 </div>
-                <div class="col-md-2">
+                @*<div class="col-md-2">
                     <a href="https://www.instagram.com/sasha_demchuk/" class="text-decoration-none"><i class="fa-brands fa-instagram"></i></a>
                     <a href="https://www.youtube.com/channel/UCp5yM8lXu6aQ_XVfKa1iEYQ" class="text-decoration-none"><i class="fa-brands fa-youtube"></i></a>
-                </div>
+                </div>*@
             </div>
         </div>
     </footer>
