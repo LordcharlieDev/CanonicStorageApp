@@ -3,7 +3,6 @@ using CNNCStorageDB.Data;
 using CNNCStorageDB.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -37,7 +36,6 @@ namespace CanonicStorageApp.Controllers
                 if (user != null)
                 {
                     await Authenticate(model.Username);
-
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Incorrect username or password");

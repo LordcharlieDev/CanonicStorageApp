@@ -1,5 +1,4 @@
-﻿@model CNNCStorageDB.Models.User
-@{
+﻿@{
     ViewData["Title"] = "Home";
 }
 
@@ -8,10 +7,10 @@
         <h2 class="display-2">Tables</h2>
         <div class="row mt-5">
             <div class="col">
-                <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Departments" asp-action="Index">Department</a>
+                <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Departments" asp-action="Index">Departments</a>
             </div>
             <div class="col">
-                <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Positions" asp-action="Index">Position</a>
+                <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Positions" asp-action="Index">Positions</a>
             </div>
             <div class="col">
                 <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Workers" asp-action="Index">Workers</a>
@@ -23,12 +22,6 @@
             </div>
             <div class="col">
                 <a class="btn btn-secondary m-1 fs-4" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
-            </div>
-            <div class="col">
-                @if (@Model.IsAdmin)
-                {
-                    <a class="btn btn-secondary m-0 fs-4" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                }
             </div>
         </div>
     </div>

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool IsAdmin = new CNNCStorageDB.Data.CNNCDbContext().Users.Where(x => x.Login == User.Identity.Name).Select(x => x.IsAdmin).FirstOrDefault();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,9 +26,31 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @*<li class="nav-item">
+                        <input class="nav-link text-dark" type="button" value="Logout" onclick="location.href='@Url.Action("Logout", "Account")'" />
+                        </li>*@
                         <li class="nav-item">
-                            @*<input class="nav-link text-dark" type="button" value="Logout" onclick="location.href='@Url.Action("Logout", "Account")'" />*@
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Departments" asp-action="Index">Departments</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Positions" asp-action="Index">Positions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Workers" asp-action="Index">Workers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
+                        </li>
+                        @if (@IsAdmin)
+                        {
+                            <div class="col">
+
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                            </div>
+                        }
                     </ul>
                     <a class="nav-link text-dark pt-2 pb-2 pe-0 ps-0" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                 </div>
@@ -40,13 +65,15 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            <div class="row m-0 justify-content-between">
-                <div class="col-md-1">
+            <div class="row m-0">
+                <div class="col">
                     &copy; 2022 - CanonicStorageApp@* - <a class="text-decoration-none" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
                 </div>
-                <div class="col-md-2">
-                    <a href="https://www.instagram.com/sasha_demchuk/" class="text-decoration-none"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/channel/UCp5yM8lXu6aQ_XVfKa1iEYQ" class="text-decoration-none"><i class="fa-brands fa-youtube"></i></a>
+                <div class="col">
+                    <div class="text-end">
+                        <a href="https://www.instagram.com/sasha_demchuk/" class="text-decoration-none"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/channel/UCp5yM8lXu6aQ_XVfKa1iEYQ" class="text-decoration-none"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
                 </div>
             </div>
         </div>

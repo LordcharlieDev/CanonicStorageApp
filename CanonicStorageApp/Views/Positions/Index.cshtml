@@ -6,17 +6,23 @@
 
 <h1>Positions</h1>
 
-<table id="mainTable" class="table">
+<table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                <a asp-action="Create" class="btn btn-sm btn-success">
-                    <i class="fa-solid fa-plus"></i> New
-                </a>
-                <button id="printButton" class="btn btn-sm btn-success" @*onclick="printPDF()"*@>Print</button>
+                <div class="row">
+                    <div class="col-3">
+                        <a asp-action="Create" class="btn btn-sm btn-success">
+                            <i class="fa-solid fa-plus"></i> New
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <button class="btn m-0 p-0" onclick='OpenPrintTab("Positions","Print")'><i class="fa-solid fa-print"></i> Print</button>
+                    </div>
+                </div>
             </th>
         </tr>
     </thead>
@@ -36,15 +42,3 @@
         }
     </tbody>
 </table>
-
-@section scripts
-    {
-    <script src="~/js/site.js"></script>
-    <script>
-        
-$("#printButton").click(function () {
-    window.open("@Url.Action("Positions", "Print")", "_blank",
-        "menubar=no, toolbar=no, resizable=no, top=100, left=200, width=500, height=500");
-});
-    </script>
-}
