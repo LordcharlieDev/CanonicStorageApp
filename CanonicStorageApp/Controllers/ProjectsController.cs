@@ -15,13 +15,67 @@ namespace CanonicStorageApp.Controllers
         {
             _context = context;
         }
+        private static List<Project> projects = null;
 
         // GET: Projects
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sort)
         {
-            return _context.Projects != null ?
-                        View(await _context.Projects.ToListAsync()) :
-                        Problem("Entity set 'CNNCDbContext.Projects'  is null.");
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sort) ? "name_desc" : "";
+            ViewBag.BudgetSortParm = sort == "budget" ? "budget_desc" : "budget";
+            ViewBag.StartDateSortParm = sort == "StartDate" ? "StartDate_desc" : "StartDate";
+            ViewBag.EndDateSortParm = sort == "EndDate" ? "EndDate_desc" : "EndDate";
+            ViewBag.FinalPriceSortParm = sort == "FinalCost" ? "FinalCost_desc" : "FinalCost";
+            projects = await _context.Projects.Include(x => x.Workers).ToListAsync();
+            if (sort == "name_desc")
+            {
+                projects = projects.OrderByDescending(d => d.Name).ToList();
+            }
+            else if (sort == "budget")
+            {
+                projects = projects.OrderByDescending(d => d.Budget).ToList();
+            }
+            else if (sort == "budget_desc")
+            {
+                projects = projects.OrderByDescending(d => d.Budget).ToList();
+            }
+            else if (sort == "StartDate")
+            {
+                projects = projects.OrderBy(d => d.StartDate).ToList();
+            }
+            else if (sort == "StartDate_desc")
+            {
+                projects = projects.OrderByDescending(d => d.StartDate).ToList();
+            }
+            else if (sort == "EndDate")
+            {
+                projects = projects.OrderBy(d => d.EndDate).ToList();
+            }
+            else if (sort == "EndDate_desc")
+            {
+                projects = projects.OrderByDescending(d => d.EndDate).ToList();
+            }
+            else if (sort == "FinalCost")
+            {
+                projects = projects.OrderBy(d => d.FinalCost).ToList();
+            }
+            else if (sort == "FinalCost_desc")
+            {
+                projects = projects.OrderByDescending(d => d.FinalCost).ToList();
+            }
+            else
+            {
+                projects = projects.OrderBy(d => d.Name).ToList();
+            }
+            return View(projects);
+        }
+
+        public async Task<IActionResult> Print()
+        {
+            if (projects == null)
+            {
+                return View(await _context.Projects.Include(x => x.Workers).OrderBy(x => x.Name).ToListAsync());
+            }
+            return View(projects);
         }
 
         // GET: Projects/Details/5
@@ -31,9 +85,8 @@ namespace CanonicStorageApp.Controllers
             {
                 return NotFound();
             }
-
             var project = await _context.Projects.Include(x => x.Workers).Include(x => x.Client)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                                                 .FirstOrDefaultAsync(m => m.Id == id);
             if (project == null)
             {
                 return NotFound();
@@ -168,7 +221,7 @@ namespace CanonicStorageApp.Controllers
             {
                 return NotFound();
             }
-
+            var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName");
             return View(project);
         }
 

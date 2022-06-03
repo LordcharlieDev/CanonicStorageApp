@@ -1,0 +1,70 @@
+﻿@model IEnumerable<CNNCStorageDB.Models.Project>
+@{
+    ViewData["Title"] = "Projects";
+    Layout = "~/Views/Shared/_PrintLayout.cshtml";
+    int number = 0;
+}
+
+<h1>Projects</h1>
+<hr/>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                 &#8470
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Budget)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinalCost)
+            </th>
+            <th>
+                @Html.Display("Number of workers")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(++number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Budget)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinalCost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Workers.Count)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
