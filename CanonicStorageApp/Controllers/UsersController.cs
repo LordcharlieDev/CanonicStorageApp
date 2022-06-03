@@ -19,7 +19,7 @@ namespace CanonicStorageApp.Controllers
         [Authorize]
         private async Task<bool> IsAdmin()
         {
-            var user = await _context.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(u => u.Username == User.Identity.Name).FirstOrDefaultAsync();
             if (user.IsAdmin)
             {
                 return true;
@@ -65,10 +65,10 @@ namespace CanonicStorageApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = await _context.Users.Where(x => x.Login == registerViewModel.Username).FirstOrDefaultAsync();
+                    var user = await _context.Users.Where(x => x.Username == registerViewModel.Username).FirstOrDefaultAsync();
                     if (user == null)
                     {
-                        User newUser = new User { Login = registerViewModel.Username, Password = registerViewModel.Password, IsAdmin = registerViewModel.IsAdmin };
+                        User newUser = new User { Username = registerViewModel.Username, Password = registerViewModel.Password, IsAdmin = registerViewModel.IsAdmin };
                         _context.Add(newUser);
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Index));
@@ -120,7 +120,7 @@ namespace CanonicStorageApp.Controllers
                     return NotFound();
                 }
                 var u = await _context.Users.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
-                if (User.Identity.Name == u.Login)
+                if (User.Identity.Name == u.Username)
                 {
                     ModelState.AddModelError("", "Not access");
                 }
@@ -180,7 +180,7 @@ namespace CanonicStorageApp.Controllers
             if (await IsAdmin())
             {
                 var u = await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
-                if (User.Identity.Name == u.Login)
+                if (User.Identity.Name == u.Username)
                 {
                     return Problem("Unable to delete a user who is authorized in the application", null, null, "Not access");
                 }

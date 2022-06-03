@@ -1,5 +1,6 @@
 ﻿@{
-    bool IsAdmin = new CNNCStorageDB.Data.CNNCDbContext().Users.Where(x => x.Login == User.Identity.Name).Select(x => x.IsAdmin).FirstOrDefault();
+    CNNCStorageDB.Data.CNNCDbContext db = new CNNCStorageDB.Data.CNNCDbContext();
+    bool IsAdmin = db.Users.Where(x => x.Username == User.Identity.Name).Select(x => x.IsAdmin).FirstOrDefault();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +17,10 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Canonic Storage</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="img-fluid rounded-circle img-thumbnail m-0 p-0" style="max-width: 30px" src="~/img/logo.png" alt="..." />
+                    Canonic Storage
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -46,10 +50,11 @@
                         </li>
                         @if (@IsAdmin)
                         {
-                            <div class="col">
-
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                            </div>
+                            <li>
+                                <div class="col">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                                </div>
+                            </li>
                         }
                     </ul>
                     <a class="nav-link text-dark pt-2 pb-2 pe-0 ps-0" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
@@ -67,7 +72,7 @@
         <div class="container">
             <div class="row m-0">
                 <div class="col">
-                    &copy; 2022 - CANONICSOFT@* - <a class="text-decoration-none" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
+                    &copy; 2022 - CANONIC SOFTWARE@* - <a class="text-decoration-none" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
                 </div>
                 <div class="col">
                     <div class="text-end">
