@@ -13,13 +13,31 @@ namespace CanonicStorageApp.Controllers
         {
             _context = context;
         }
-
+        static private List<Client> clients = null;
         // GET: Clients
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sort)
         {
-              return _context.Clients != null ? 
-                          View(await _context.Clients.ToListAsync()) :
-                          Problem("Entity set 'CNNCDbContext.Clients'  is null.");
+            ViewBag.Sort = sort;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sort) ? "name_desc" : "";
+            clients = await _context.Clients.ToListAsync();
+            if (sort == "name_desc")
+            {
+                clients = clients.OrderByDescending(x => x.FullName).ToList();
+            }
+            else
+            {
+                clients = clients.OrderBy(x => x.FullName).ToList();
+            }
+            return View(clients);
+        }
+
+        public async Task<IActionResult> Print()
+        {
+            if (clients == null)
+            {
+                return View(await _context.Clients.OrderBy(x => x.FullName).ToListAsync());
+            }
+            return View(clients);
         }
 
         // GET: Clients/Details/5
