@@ -16,13 +16,68 @@ namespace CanonicStorageApp.Controllers
             _context = context;
         }
 
+        private static List<Worker> workers = null;
+
         // GET: Workers
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sort)
         {
-            return _context.Workers != null ?
-                        View(await _context.Workers.ToListAsync()) :
-                        Problem("Entity set 'CNNCDbContext.Workers'  is null.");
+            ViewBag.LastNameSortParm = String.IsNullOrEmpty(sort) ? "lname_desc" : "";
+            ViewBag.FirstNameSortParm = sort == "fname" ? "fname_desc" : "fname";
+            ViewBag.BirthdateSortParm = sort == "date" ? "date_desc" : "date";
+            ViewBag.SalarySortParm = sort == "salary" ? "salary_desc" : "salary";
+            ViewBag.PremiumSortParm = sort == "premium" ? "premium_desc" : "premium";
+            workers = await _context.Workers.ToListAsync();
+            if (sort == "fname")
+            {
+                workers = workers.OrderBy(d => d.FirstName).ToList();
+            }
+            else if (sort == "fname_desc")
+            {
+                workers = workers.OrderByDescending(d => d.FirstName).ToList();
+            }
+            else if (sort == "lname_desc")
+            {
+                workers = workers.OrderByDescending(d => d.LastName).ToList();
+            }
+            else if (sort == "date")
+            {
+                workers = workers.OrderBy(d => d.Birthdate).ToList();
+            }
+            else if (sort == "date_desc")
+            {
+                workers = workers.OrderByDescending(d => d.Birthdate).ToList();
+            }
+            else if (sort == "salary")
+            {
+                workers = workers.OrderBy(d => d.Salary).ToList();
+            }
+            else if (sort == "salary_desc")
+            {
+                workers = workers.OrderByDescending(d => d.Salary).ToList();
+            }
+            else if (sort == "premium")
+            {
+                workers = workers.OrderBy(d => d.Premium).ToList();
+            }
+            else if (sort == "premium_desc")
+            {
+                workers = workers.OrderByDescending(d => d.Premium).ToList();
+            }
+            else
+            {
+                workers = workers.OrderBy(d => d.LastName).ToList();
+            }
+            return View(workers);
+        }
+
+        public async Task<IActionResult> Print()
+        {
+            if (workers == null)
+            {
+                return View(await _context.Workers.OrderBy(x => x.LastName).ToListAsync());
+            }
+            return View(workers);
         }
 
         // GET: Workers/Details/5
@@ -106,9 +161,9 @@ namespace CanonicStorageApp.Controllers
             }
             ModelState.Remove("Position.Department");
             worker.Position = await _context.Positions.Include(x => x.Department).Where(x => x.Name == worker.Position.Name).FirstOrDefaultAsync(); //add
+            worker.Location = await _context.Locations.Where(x => x.Name == worker.Location.Name).FirstOrDefaultAsync(); //add
             if (ModelState.IsValid)
             {
-                worker.Location = await _context.Locations.Where(x => x.Name == worker.Location.Name).FirstOrDefaultAsync(); //add
                 try
                 {
                     _context.Update(worker);
@@ -127,6 +182,8 @@ namespace CanonicStorageApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.PositionList = new SelectList(await _context.Positions.ToListAsync(), "Name", "Name", worker.Position.Id); //add
+            ViewBag.LocationList = new SelectList(await _context.Locations.ToListAsync(), "Name", "Name", worker.Location.Id); //add
             return View(worker);
         }
 
