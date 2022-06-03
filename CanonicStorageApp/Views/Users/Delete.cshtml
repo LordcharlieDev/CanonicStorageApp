@@ -33,6 +33,7 @@
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="row m-2">
             <div class="col-md-2">
                 <input type="submit" value="Delete" class="btn btn-danger w-75" />

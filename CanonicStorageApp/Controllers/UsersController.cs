@@ -111,7 +111,7 @@ namespace CanonicStorageApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Password,IsAdmin")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Password,IsAdmin")] User user)
         {
             if (await IsAdmin())
             {
@@ -119,8 +119,7 @@ namespace CanonicStorageApp.Controllers
                 {
                     return NotFound();
                 }
-                var u = await _context.Users.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
-                if (User.Identity.Name == u.Username)
+                if (User.Identity.Name == user.Username)
                 {
                     ModelState.AddModelError("", "Not access");
                 }
@@ -182,7 +181,9 @@ namespace CanonicStorageApp.Controllers
                 var u = await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
                 if (User.Identity.Name == u.Username)
                 {
-                    return Problem("Unable to delete a user who is authorized in the application", null, null, "Not access");
+                    ModelState.AddModelError("", "Not access");
+                    return View(u);
+                    //return Problem("Unable to delete a user who is authorized in the application", null, null, "Not access");
                 }
                 if (_context.Users == null)
                 {

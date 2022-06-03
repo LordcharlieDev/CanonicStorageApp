@@ -9,6 +9,7 @@ namespace CanonicStorageApp.Models
 
         [Required(ErrorMessage = "Enter password")]
         [DataType(DataType.Password)]
+        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", ErrorMessage = "The password does not meet the requirements.")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
