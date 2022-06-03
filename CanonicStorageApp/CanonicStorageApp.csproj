@@ -7,6 +7,51 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Views\Account\Login.cshtml" />
+    <None Include="Views\Account\Register.cshtml" />
+    <None Include="Views\Clients\Create.cshtml" />
+    <None Include="Views\Clients\Delete.cshtml" />
+    <None Include="Views\Clients\Details.cshtml" />
+    <None Include="Views\Clients\Edit.cshtml" />
+    <None Include="Views\Clients\Index.cshtml" />
+    <None Include="Views\Clients\Print.cshtml" />
+    <None Include="Views\Departments\Create.cshtml" />
+    <None Include="Views\Departments\Delete.cshtml" />
+    <None Include="Views\Departments\Details.cshtml" />
+    <None Include="Views\Departments\Edit.cshtml" />
+    <None Include="Views\Departments\Index.cshtml" />
+    <None Include="Views\Departments\Print.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Positions\Create.cshtml" />
+    <None Include="Views\Positions\Delete.cshtml" />
+    <None Include="Views\Positions\Details.cshtml" />
+    <None Include="Views\Positions\Edit.cshtml" />
+    <None Include="Views\Positions\Index.cshtml" />
+    <None Include="Views\Positions\Print.cshtml" />
+    <None Include="Views\Projects\Create.cshtml" />
+    <None Include="Views\Projects\Delete.cshtml" />
+    <None Include="Views\Projects\Details.cshtml" />
+    <None Include="Views\Projects\Edit.cshtml" />
+    <None Include="Views\Projects\Index.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_LoginLayout.cshtml" />
+    <None Include="Views\Shared\_PrintLayout.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\Users\Create.cshtml" />
+    <None Include="Views\Users\Delete.cshtml" />
+    <None Include="Views\Users\Edit.cshtml" />
+    <None Include="Views\Users\Index.cshtml" />
+    <None Include="Views\Workers\Create.cshtml" />
+    <None Include="Views\Workers\Delete.cshtml" />
+    <None Include="Views\Workers\Details.cshtml" />
+    <None Include="Views\Workers\Edit.cshtml" />
+    <None Include="Views\Workers\Index.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
