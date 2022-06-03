@@ -14,13 +14,40 @@ namespace CanonicStorageApp.Controllers
             _context = context;
         }
 
+        static private List<Department> departments = null;
+
         // GET: Departments
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //      return _context.Departments != null ? 
+        //                  View(await _context.Departments.ToListAsync()) :
+        //                  Problem("Entity set 'CNNCDbContext.Departments'  is null.");
+        //}
+
+        public async Task<IActionResult> Index(string sort)
         {
-              return _context.Departments != null ? 
-                          View(await _context.Departments.ToListAsync()) :
-                          Problem("Entity set 'CNNCDbContext.Departments'  is null.");
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sort) ? "name_desc" : "";
+            departments = await _context.Departments.ToListAsync();
+            if(sort == "name_desc")
+            {
+                    departments = departments.OrderByDescending(d => d.Name).ToList();
+            }
+            else
+            {
+                departments = departments.OrderBy(d => d.Name).ToList();
+            }
+            return View(departments);
         }
+
+        public async Task<IActionResult> Print()
+        {
+            if(departments == null)
+            {
+                return View(await _context.Departments.OrderBy(x => x.Name).ToListAsync());
+            }
+            return View(departments);
+        }
+
 
         // GET: Departments/Details/5
         public async Task<IActionResult> Details(int? id)
