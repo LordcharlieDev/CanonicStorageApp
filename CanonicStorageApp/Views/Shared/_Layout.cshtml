@@ -1,6 +1,7 @@
-﻿@{
-    CNNCStorageDB.Data.CNNCDbContext db = new CNNCStorageDB.Data.CNNCDbContext();
-    bool IsAdmin = db.Users.Where(x => x.Username == User.Identity.Name).Select(x => x.IsAdmin).FirstOrDefault();
+﻿@using System.Configuration
+@{
+    var role = User.Identities.ToList().Select(x => x.RoleClaimType).FirstOrDefault();
+    bool IsAdmin = role == "Administrator";
 }
 <!DOCTYPE html>
 <html lang="en">

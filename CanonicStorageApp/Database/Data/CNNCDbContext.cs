@@ -9,12 +9,15 @@ namespace CNNCStorageDB.Data
         public CNNCDbContext() 
         {
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public CNNCDbContext(DbContextOptions<CNNCDbContext> options) : base(options)
         {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-SEGB2UP;Initial catalog = CNNCDb;Integrated Security=True;Connect Timeout=5;");
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-SEGB2UP;Initial catalog = CNNCDb;Integrated Security=True;Connect Timeout=5;");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

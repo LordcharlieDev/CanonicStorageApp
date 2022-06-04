@@ -1,11 +1,13 @@
 using CNNCStorageDB.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<CNNCDbContext>();
+builder.Services.AddDbContext<CNNCDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("CNNCDbConnection")));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
                 {
@@ -13,7 +15,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 });
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
