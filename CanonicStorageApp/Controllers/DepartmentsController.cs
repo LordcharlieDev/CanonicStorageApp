@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using CNNCStorageDB.Data;
 using CNNCStorageDB.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CanonicStorageApp.Controllers
 {
@@ -24,6 +25,7 @@ namespace CanonicStorageApp.Controllers
         //                  Problem("Entity set 'CNNCDbContext.Departments'  is null.");
         //}
 
+        [Authorize]
         public async Task<IActionResult> Index(string sort)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sort) ? "name_desc" : "";
@@ -39,6 +41,7 @@ namespace CanonicStorageApp.Controllers
             return View(departments);
         }
 
+        [Authorize]
         public async Task<IActionResult> Print()
         {
             if(departments == null)
@@ -50,6 +53,7 @@ namespace CanonicStorageApp.Controllers
 
 
         // GET: Departments/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Departments == null)
@@ -68,6 +72,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Departments/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -78,6 +83,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Name")] Department department)
         {
             if (ModelState.IsValid)
@@ -90,6 +96,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Departments/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Departments == null)
@@ -110,6 +117,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department department)
         {
             if (id != department.Id)
@@ -141,6 +149,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Departments/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Departments == null)
@@ -161,6 +170,7 @@ namespace CanonicStorageApp.Controllers
         // POST: Departments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Departments == null)

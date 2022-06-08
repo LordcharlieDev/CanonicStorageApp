@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using CNNCStorageDB.Data;
 using CNNCStorageDB.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CanonicStorageApp.Controllers
 {
@@ -15,6 +16,7 @@ namespace CanonicStorageApp.Controllers
         }
         static private List<Client> clients = null;
         // GET: Clients
+        [Authorize]
         public async Task<IActionResult> Index(string sort)
         {
             ViewBag.Sort = sort;
@@ -31,6 +33,7 @@ namespace CanonicStorageApp.Controllers
             return View(clients);
         }
 
+        [Authorize]
         public async Task<IActionResult> Print()
         {
             if (clients == null)
@@ -41,6 +44,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Clients/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Clients == null)
@@ -59,6 +63,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Clients/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -69,6 +74,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,FullName,Address,Email,Phone")] Client client)
         {
             if (ModelState.IsValid)
@@ -81,6 +87,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Clients/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Clients == null)
@@ -101,6 +108,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Address,Email,Phone")] Client client)
         {
             if (id != client.Id)
@@ -132,6 +140,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Clients/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Clients == null)
@@ -152,6 +161,7 @@ namespace CanonicStorageApp.Controllers
         // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Clients == null)

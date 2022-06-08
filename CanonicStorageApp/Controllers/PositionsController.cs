@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CNNCStorageDB.Data;
 using CNNCStorageDB.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CanonicStorageApp.Controllers
 {
@@ -23,6 +24,7 @@ namespace CanonicStorageApp.Controllers
         //                View(await _context.Positions.ToListAsync()) :
         //                Problem("Entity set 'CNNCDbContext.Positions'  is null.");
         //}
+        [Authorize]
         public async Task<ActionResult> Index(string sort)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sort) ? "name_desc" : "";
@@ -39,6 +41,7 @@ namespace CanonicStorageApp.Controllers
             return View(positions);
         }
 
+        [Authorize]
         public async Task<IActionResult> Print()
         {
             if (positions == null)
@@ -49,6 +52,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Positions/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Positions == null)
@@ -67,6 +71,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Positions/Create
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name"); //add
@@ -78,6 +83,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Name,Department")] Position position)
         {
             if (ModelState.IsValid)
@@ -93,6 +99,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Positions/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Positions == null)
@@ -114,6 +121,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Department")] Position position)
         {
             if (id != position.Id)
@@ -147,6 +155,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Positions/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Positions == null)
@@ -167,6 +176,7 @@ namespace CanonicStorageApp.Controllers
         // POST: Positions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Positions == null)

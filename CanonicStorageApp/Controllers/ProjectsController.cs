@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using CNNCStorageDB.Data;
 using CNNCStorageDB.Models;
 using CanonicStorageApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CanonicStorageApp.Controllers
 {
@@ -18,6 +19,7 @@ namespace CanonicStorageApp.Controllers
         private static List<Project> projects = null;
 
         // GET: Projects
+        [Authorize]
         public async Task<IActionResult> Index(string sort)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sort) ? "name_desc" : "";
@@ -69,6 +71,7 @@ namespace CanonicStorageApp.Controllers
             return View(projects);
         }
 
+        [Authorize]
         public async Task<IActionResult> Print()
         {
             if (projects == null)
@@ -79,6 +82,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Projects/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Projects == null)
@@ -95,6 +99,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize]
         public IActionResult Create()
         {
             var project = new Project();
@@ -109,6 +114,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create(ProjectViewModel projectViewModel)
         {
             if (projectViewModel.SelectedWorkers.Length > 0)
@@ -134,6 +140,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Projects == null)
@@ -161,6 +168,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, ProjectViewModel projectViewModel)
         {
             if (id != projectViewModel.Project.Id)
@@ -208,6 +216,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Projects/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Projects == null)
@@ -228,6 +237,7 @@ namespace CanonicStorageApp.Controllers
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Projects == null)
