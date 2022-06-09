@@ -39,11 +39,11 @@ namespace CNNCStorageDB.Data
         {
             modelBuilder.Entity<Worker>().HasData(new[]
             {
-                new {Id = 1, FirstName = "Roman",  MiddleName = "Mukolaiovych", LastName = "Tomecher",   Email = "romantomechek@gmail.com",    Phone = "+380678965789", PositionId = 13, Birthdate = Convert.ToDateTime("12/05/2000"), Salary = 3500, Premium = 0, LocationId = 2},
-                new {Id = 2, FirstName = "Oksana", MiddleName = "Vadymivna",    LastName = "Stepanchuk", Email = "oksanastepanchuk@gmail.com", Phone = "+380938965789", PositionId = 5,  Birthdate = Convert.ToDateTime("12/10/1995"), Salary = 1000, Premium = 0, LocationId = 2},
-                new {Id = 3, FirstName = "Inna",   MiddleName = "Mykolaivna",   LastName = "Koltaniuk",  Email = "innakoltaniuk@gmail.com",    Phone = "+380938467895", PositionId = 5,  Birthdate = Convert.ToDateTime("06/06/1993"), Salary = 1000, Premium = 0, LocationId = 1},
-                new {Id = 4, FirstName = "Katia",  MiddleName = "Oleksiivna",   LastName = "Tomecher",   Email = "katiatomecher@gmail.com",    Phone = "+380684579512", PositionId = 12, Birthdate = Convert.ToDateTime("07/24/1997"), Salary = 1000, Premium = 0, LocationId = 2},
-                new {Id = 5, FirstName = "Sasha",  MiddleName = "Artemivna",    LastName = "Melnik",     Email = "sashamelnik@gmail.com",      Phone = "+380995467845", PositionId = 11, Birthdate = Convert.ToDateTime("08/30/1999"), Salary = 1000, Premium = 0, LocationId = 3},
+                new {Id = 1, FirstName = "Roman",  MiddleName = "Mukolaiovych", LastName = "Tomecher",   Email = "romantomechek@gmail.com",    Phone = "+380678965789", PositionId = 13, Birthdate = Convert.ToDateTime("12/05/2000"), Salary = 3500, Premium = 0, LocationId = 2, DateOfEmployment = Convert.ToDateTime("06/18/2017")},
+                new {Id = 2, FirstName = "Oksana", MiddleName = "Vadymivna",    LastName = "Stepanchuk", Email = "oksanastepanchuk@gmail.com", Phone = "+380938965789", PositionId = 5,  Birthdate = Convert.ToDateTime("12/10/1995"), Salary = 1000, Premium = 0, LocationId = 2, DateOfEmployment = Convert.ToDateTime("05/05/2017")},
+                new {Id = 3, FirstName = "Inna",   MiddleName = "Mykolaivna",   LastName = "Koltaniuk",  Email = "innakoltaniuk@gmail.com",    Phone = "+380938467895", PositionId = 5,  Birthdate = Convert.ToDateTime("06/06/1993"), Salary = 1000, Premium = 0, LocationId = 1, DateOfEmployment = Convert.ToDateTime("04/12/2018")},
+                new {Id = 4, FirstName = "Katia",  MiddleName = "Oleksiivna",   LastName = "Tomecher",   Email = "katiatomecher@gmail.com",    Phone = "+380684579512", PositionId = 12, Birthdate = Convert.ToDateTime("07/24/1997"), Salary = 1000, Premium = 0, LocationId = 2, DateOfEmployment = Convert.ToDateTime("11/15/2020")},
+                new {Id = 5, FirstName = "Sasha",  MiddleName = "Artemivna",    LastName = "Melnik",     Email = "sashamelnik@gmail.com",      Phone = "+380995467845", PositionId = 11, Birthdate = Convert.ToDateTime("08/30/1999"), Salary = 1000, Premium = 0, LocationId = 3, DateOfEmployment = Convert.ToDateTime("08/21/2021")},
             });
         }
         public static void SeedProjects(this ModelBuilder modelBuilder)

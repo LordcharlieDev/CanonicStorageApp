@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CNNCStorageDB.Validations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -17,8 +18,10 @@ namespace CNNCStorageDB.Models
         public string Name { get; set; }
         public int Budget { get; set; }
         [DisplayName("Start date")]
+        [DateValidation(ErrorMessage = "The date must be correct!")]
         public DateTime StartDate { get; set; }
         [DisplayName("End date")]
+        [DateValidation(ErrorMessage = "The date must be correct!")]
         public DateTime EndDate { get; set; }
         [DisplayName("Final cost")]
         public int FinalCost { get; set; }
