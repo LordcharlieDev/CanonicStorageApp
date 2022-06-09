@@ -25,15 +25,20 @@ namespace CNNCStorageDB.Models
         [RegularExpression(@"[a-z0-9]+(?:\.[a-z0-9]+)*@(?:[a-z0-9](?:[a-z0-9]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9]*[a-z0-9])?", ErrorMessage = "The email does not meet the requirements.")]
         public string Email { get; set; }
         [RegularExpression(@"^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$", ErrorMessage = "The phone does not meet the requirements.")]
+        [MaxLength(13)]
         public string Phone { get; set; }
+        [DateValidation(ErrorMessage = "The date must be correct!")]
         public DateTime Birthdate { get; set; }
         [Range(1, 100000, ErrorMessage = "Salary must be greater than 0")]
         public int Salary { get; set; }
         [Range(0, 100, ErrorMessage = "Premium must be a positive number")]
         public int Premium { get; set; }
         [DateValidation(ErrorMessage = "The date must be correct!")]
+        [DisplayName("Date of emploment")]
         public DateTime DateOfEmployment { get; set; }
         public string FullInfo => $"{Id} - {FirstName} {MiddleName} {LastName}";
+        public int Experience => DateOfEmployment.Year == DateTime.Now.Year ? 0 : DateTime.Now.AddYears(-DateOfEmployment.Year).Year;
+
 
         public Location Location { get; set; }
         public Position Position { get; set; }

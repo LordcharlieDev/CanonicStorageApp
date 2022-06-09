@@ -31,6 +31,7 @@ namespace CNNCStorageDB.Configurations
             builder.Property(w => w.DateOfEmployment).IsRequired()
                                             .HasDefaultValue(DateTime.Now.AddHours(8));
             builder.Ignore(w => w.FullInfo);
+            builder.Ignore(w => w.Experience);
         }
     }
 }
