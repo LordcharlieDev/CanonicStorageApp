@@ -70,6 +70,18 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Location.Name)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfEmployment)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DateOfEmployment.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Experience)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Experience) years
+        </dd>
     </dl>
 </div>
 <div class="row m-2">

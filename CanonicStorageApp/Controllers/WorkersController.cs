@@ -27,7 +27,10 @@ namespace CanonicStorageApp.Controllers
             ViewBag.BirthdateSortParm = sort == "date" ? "date_desc" : "date";
             ViewBag.SalarySortParm = sort == "salary" ? "salary_desc" : "salary";
             ViewBag.PremiumSortParm = sort == "premium" ? "premium_desc" : "premium";
-            workers = await _context.Workers.ToListAsync();
+            ViewBag.ExpSortParm = sort == "experience" ? "experience_desc" : "experience";
+            workers = await _context.Workers.Include(x=>x.Position)
+                                            .Include(x => x.Location)
+                                            .ToListAsync();
             if (sort == "fname")
             {
                 workers = workers.OrderBy(d => d.FirstName).ToList();
@@ -64,6 +67,14 @@ namespace CanonicStorageApp.Controllers
             {
                 workers = workers.OrderByDescending(d => d.Premium).ToList();
             }
+            else if (sort == "experience")
+            {
+                workers = workers.OrderBy(d => d.DateOfEmployment).ToList();
+            }
+            else if (sort == "experience_desc")
+            {
+                workers = workers.OrderByDescending(d => d.DateOfEmployment).ToList();
+            }
             else
             {
                 workers = workers.OrderBy(d => d.LastName).ToList();
@@ -75,7 +86,10 @@ namespace CanonicStorageApp.Controllers
         {
             if (workers == null)
             {
-                return View(await _context.Workers.OrderBy(x => x.LastName).ToListAsync());
+                return View(await _context.Workers.Include(x => x.Position)
+                                                  .Include(x => x.Location)
+                                                  .OrderBy(x => x.LastName)
+                                                  .ToListAsync());
             }
             return View(workers);
         }
@@ -91,7 +105,7 @@ namespace CanonicStorageApp.Controllers
 
             var worker = await _context.Workers.Include(x => x.Position)
                                                .Include(x => x.Location)
-                                               .FirstOrDefaultAsync(m => m.Id == id);
+                                               .FirstOrDefaultAsync(x => x.Id == id);
             if (worker == null)
             {
                 return NotFound();
@@ -114,7 +128,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location")] Worker worker)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location,DateOfEmployment")] Worker worker)
         {
             worker.Position = await _context.Positions.Include(x => x.Department).Where(x => x.Name == worker.Position.Name).FirstOrDefaultAsync(); //add
             ModelState.Remove("Position.Department");
@@ -153,7 +167,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location")] Worker worker)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location,DateOfEmployment")] Worker worker)
         {
             if (id != worker.Id)
             {

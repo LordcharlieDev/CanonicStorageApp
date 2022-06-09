@@ -6,7 +6,7 @@
 
 <h1>Workers</h1>
 
-<table class="table">
+<table class="table fs-table">
     <thead>
         <tr>
             <th>
@@ -45,6 +45,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Premium)
                 <a href="@Url.Action("Index", new { sort = ViewBag.PremiumSortParm })" class="text-decoration-none">
+                    <i class="fa-solid fa-sort"></i>
+                </a>
+            </th>
+            <th>
+                Exp
+                <a href="@Url.Action("Index", new { sort = ViewBag.ExpSortParm })" class="text-decoration-none">
                     <i class="fa-solid fa-sort"></i>
                 </a>
             </th>
@@ -89,6 +95,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Premium)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem =>  item.Experience)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn"><i class="fa-solid fa-square-pen"></i> Edit</a>|
