@@ -81,7 +81,7 @@ namespace CanonicStorageApp.Controllers
             }
             return View(workers);
         }
-
+        [Authorize]
         public async Task<IActionResult> Print()
         {
             if (workers == null)
@@ -115,6 +115,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Workers/Create
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             ViewBag.PositionList = new SelectList(await _context.Positions.Include(x => x.Department)
@@ -128,6 +129,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location,DateOfEmployment")] Worker worker)
         {
             worker.Position = await _context.Positions.Include(x => x.Department).Where(x => x.Name == worker.Position.Name).FirstOrDefaultAsync(); //add
@@ -145,6 +147,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Workers/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Workers == null)
@@ -167,6 +170,7 @@ namespace CanonicStorageApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location,DateOfEmployment")] Worker worker)
         {
             if (id != worker.Id)
@@ -202,6 +206,7 @@ namespace CanonicStorageApp.Controllers
         }
 
         // GET: Workers/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Workers == null)
@@ -223,6 +228,7 @@ namespace CanonicStorageApp.Controllers
         // POST: Workers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Workers == null)
