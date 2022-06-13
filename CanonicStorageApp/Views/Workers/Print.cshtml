@@ -7,7 +7,7 @@
 
 <h1>Workers</h1>
 <hr />
-<table class="table">
+<table class="table fs-table-print">
     <thead>
         <tr>
             <th>
@@ -33,6 +33,21 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Birthdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Army)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Passport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaritalStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Childrens)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Salary)
@@ -75,6 +90,21 @@
                 </td>
                 <td>
                     @item.Birthdate.ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Army)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Passport)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaritalStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Childrens)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Salary)

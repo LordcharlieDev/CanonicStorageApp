@@ -16,7 +16,82 @@ html {
 body {
   margin-bottom: 60px;
 }
-
 .fs-table {
     font-size: 15px;
+}
+
+.fs-table-print {
+    font-size: 12px;
+}
+@media(max-width: 1300px)
+{
+    .fs-table-print {
+        font-size: 11.5px;
+    }
+    .fs-table {
+        font-size: 14px;
+    }
+}
+@media(max-width: 1250px)
+{
+    .fs-table-print {
+        font-size: 11px;
+    }
+    .fs-table {
+        font-size: 13.5px;
+    }
+}
+@media(max-width: 1200px)
+{
+    .fs-table-print {
+        font-size: 10.5px;
+    }
+    .fs-table {
+        font-size: 13px;
+    }
+}
+@media(max-width: 1150px)
+{
+    .fs-table-print {
+        font-size: 10px;
+    }
+    .fs-table {
+        font-size: 12.5px;
+    }
+}
+@media(max-width: 1100px)
+{
+    .fs-table-print {
+        font-size: 9.5px;
+    }
+    .fs-table {
+        font-size: 12px;
+    }
+}
+@media(max-width: 1050px)
+{
+    .fs-table-print {
+        font-size: 9px;
+    }
+    .fs-table {
+        font-size: 11.5px;
+    }
+}
+@media(max-width: 768px)
+{
+    .fs-table-print {
+        font-size: 10.5px;
+    }
+    .fs-table {
+        font-size: 11px;
+    }
+}
+@media(max-width: 576px)
+{
+    .fs-table-print {
+        font-size: 10px;
+    }
+    .fs-table {
+        font-size: 10.5px;
+    }
 }

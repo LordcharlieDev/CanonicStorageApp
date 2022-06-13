@@ -30,6 +30,14 @@ namespace CNNCStorageDB.Configurations
                                             .HasDefaultValue(0);
             builder.Property(w => w.DateOfEmployment).IsRequired()
                                             .HasDefaultValue(DateTime.Now.AddHours(8));
+            builder.Property(w => w.Address).IsRequired()
+                                            .HasMaxLength(300);
+            builder.Property(w => w.Army).IsRequired();
+            builder.Property(w => w.Passport).IsRequired()
+                                             .HasMaxLength(20);
+            builder.Property(w => w.MaritalStatus).IsRequired();
+            builder.Property(w => w.Childrens).IsRequired();
+            builder.Property(w => w.Sex).IsRequired();
             builder.Ignore(w => w.FullInfo);
             builder.Ignore(w => w.Experience);
         }

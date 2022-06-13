@@ -10,10 +10,14 @@ namespace CanonicStorageApp.Controllers
     public class WorkersController : Controller
     {
         private readonly CNNCDbContext _context;
+        static private List<string> maritalStatus;
+        static private List<string> sex;
 
         public WorkersController(CNNCDbContext context)
         {
             _context = context;
+            maritalStatus = new List<string> { "Married", "Single", "Divorced", "Widowed" };
+            sex = new List<string> { "Male", "Female" };
         }
 
         private static List<Worker> workers = null;
@@ -28,7 +32,7 @@ namespace CanonicStorageApp.Controllers
             ViewBag.SalarySortParm = sort == "salary" ? "salary_desc" : "salary";
             ViewBag.PremiumSortParm = sort == "premium" ? "premium_desc" : "premium";
             ViewBag.ExpSortParm = sort == "experience" ? "experience_desc" : "experience";
-            workers = await _context.Workers.Include(x=>x.Position)
+            workers = await _context.Workers.Include(x => x.Position)
                                             .Include(x => x.Location)
                                             .ToListAsync();
             if (sort == "fname")
@@ -119,8 +123,11 @@ namespace CanonicStorageApp.Controllers
         public async Task<IActionResult> Create()
         {
             ViewBag.PositionList = new SelectList(await _context.Positions.Include(x => x.Department)
+                                                                          .OrderBy(x => x.Name)
                                                                           .ToListAsync(), "Name", "Name"); //add
             ViewBag.LocationList = new SelectList(await _context.Locations.ToListAsync(), "Name", "Name"); //add
+            ViewBag.MaritalStatus = new SelectList(maritalStatus);
+            ViewBag.Sex = new SelectList(sex);
             return View();
         }
 
@@ -130,7 +137,7 @@ namespace CanonicStorageApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location,DateOfEmployment")] Worker worker)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location,DateOfEmployment,Address,Army,Passport,MaritalStatus,Childrens,Sex")] Worker worker)
         {
             worker.Position = await _context.Positions.Include(x => x.Department).Where(x => x.Name == worker.Position.Name).FirstOrDefaultAsync(); //add
             ModelState.Remove("Position.Department");
@@ -141,8 +148,12 @@ namespace CanonicStorageApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.PositionList = new SelectList(await _context.Positions.ToListAsync(), "Name", "Name"); //add
+            ViewBag.PositionList = new SelectList(await _context.Positions.Include(x => x.Department)
+                                                                          .OrderBy(x => x.Name)
+                                                                          .ToListAsync(), "Name", "Name"); //add
             ViewBag.LocationList = new SelectList(await _context.Locations.ToListAsync(), "Name", "Name"); //add
+            ViewBag.MaritalStatus = new SelectList(maritalStatus);
+            ViewBag.Sex = new SelectList(sex);
             return View(worker);
         }
 
@@ -162,6 +173,8 @@ namespace CanonicStorageApp.Controllers
             }
             ViewBag.PositionList = new SelectList(await _context.Positions.ToListAsync(), "Name", "Name", worker.Position.Id); //add
             ViewBag.LocationList = new SelectList(await _context.Locations.ToListAsync(), "Name", "Name", worker.Location.Id); //add
+            ViewBag.MaritalStatus = new SelectList(maritalStatus);
+            ViewBag.Sex = new SelectList(sex);
             return View(worker);
         }
 
@@ -171,7 +184,7 @@ namespace CanonicStorageApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location,DateOfEmployment")] Worker worker)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Email,Phone,Birthdate,Salary,Premium,Position,Location,DateOfEmployment,Address,Army,Passport,MaritalStatus,Childrens,Sex")] Worker worker)
         {
             if (id != worker.Id)
             {
@@ -202,6 +215,8 @@ namespace CanonicStorageApp.Controllers
             }
             ViewBag.PositionList = new SelectList(await _context.Positions.ToListAsync(), "Name", "Name", worker.Position.Id); //add
             ViewBag.LocationList = new SelectList(await _context.Locations.ToListAsync(), "Name", "Name", worker.Location.Id); //add
+            ViewBag.MaritalStatus = new SelectList(maritalStatus);
+            ViewBag.Sex = new SelectList(sex);
             return View(worker);
         }
 
