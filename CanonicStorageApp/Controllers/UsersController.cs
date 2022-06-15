@@ -84,6 +84,25 @@ namespace CanonicStorageApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        // GET: Users/Details/5
+        [Authorize]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Workers == null)
+            {
+                return NotFound();
+            }
+
+            var users = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (users == null)
+            {
+                return NotFound();
+            }
+
+            return View(users);
+        }
+
         // GET: Users/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
@@ -119,9 +138,9 @@ namespace CanonicStorageApp.Controllers
                 {
                     return NotFound();
                 }
-                if (User.Identity.Name == user.Username)
+                if ((await _context.Users.Where(x => x.Username == User.Identity.Name).FirstOrDefaultAsync()).Id == user.Id)
                 {
-                    ModelState.AddModelError("", "Not access");
+                    ModelState.AddModelError("CurrentUser", "Not access");
                 }
                 if (ModelState.IsValid)
                 {
