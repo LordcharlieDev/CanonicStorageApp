@@ -178,24 +178,41 @@ namespace CanonicStorageApp.Controllers
 
             if (projectViewModel.SelectedWorkers.Length > 0)
             {
+                projectViewModel.Project.Client = await _context.Clients.Where(x => x.Id == projectViewModel.Project.Client.Id).FirstOrDefaultAsync();
                 Project project = projectViewModel.Project;
-                project.Client = await _context.Clients.Where(x => x.Id == projectViewModel.Project.Client.Id).FirstOrDefaultAsync();
+                Project currentProject = await _context.Projects.Include(x => x.Workers).Include(x => x.Client).Where(x => x.Id == id).FirstOrDefaultAsync();
+                currentProject.Name = project.Name;
+                currentProject.Budget = project.Budget;
+                currentProject.StartDate = project.StartDate;
+                currentProject.EndDate = project.EndDate;
+                currentProject.FinalCost = project.FinalCost;
+                currentProject.Client = project.Client;
+                foreach (var item in currentProject.Workers)
+                {
+                    if(!projectViewModel.SelectedWorkers.Contains(item.Id))
+                    {
+                        currentProject.Workers.Remove(item);
+                    }
+                }
                 foreach (var item in projectViewModel.SelectedWorkers)
                 {
                     Worker worker = await _context.Workers.Where(x => x.Id == item)
                                                           .Include(x => x.Position)
                                                           .Include(x => x.Location)
                                                           .FirstOrDefaultAsync();
-                    project.Workers.Add(worker);
+                    if (!currentProject.Workers.Contains(worker))
+                    {
+                        currentProject.Workers.Add(worker);
+                    }
                 }
                 try
                 {
-                    _context.Update(project);
+                    _context.Update(currentProject);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectExists(project.Id))
+                    if (!ProjectExists(currentProject.Id))
                     {
                         return NotFound();
                     }
@@ -206,9 +223,8 @@ namespace CanonicStorageApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            projectViewModel.Project.Client = await _context.Clients.Where(x => x.Id == projectViewModel.Project.Client.Id).FirstOrDefaultAsync();
             var workers = _context.Workers.ToList();
-            var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName");
+            var cl = new SelectList(_context.Clients.ToList(), "Id", "FullName", projectViewModel.SelectedWorkers);
             ViewBag.ClientsList = cl;
             projectViewModel.Workers = workers;
             Array.Clear(projectViewModel.SelectedWorkers);
