@@ -33,8 +33,9 @@ namespace CanonicStorageApp.Controllers
             ViewBag.PremiumSortParm = sort == "premium" ? "premium_desc" : "premium";
             ViewBag.ExpSortParm = sort == "experience" ? "experience_desc" : "experience";
             workers = await _context.Workers.Include(x => x.Position)
-                                            .Include(x => x.Location)
-                                            .ToListAsync();
+                                           .Include(x => x.Location)
+                                           .Include(x => x.Projects)
+                                           .ToListAsync();
             if (sort == "fname")
             {
                 workers = workers.OrderBy(d => d.FirstName).ToList();
