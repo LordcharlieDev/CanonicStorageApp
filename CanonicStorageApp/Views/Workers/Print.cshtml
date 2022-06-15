@@ -64,6 +64,9 @@
             <th>
                 Experience
             </th>
+            <th>
+                Number of projects
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -123,6 +126,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Experience)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Projects.Count)
                 </td>
             </tr>
         }

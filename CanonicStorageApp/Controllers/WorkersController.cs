@@ -92,6 +92,7 @@ namespace CanonicStorageApp.Controllers
             {
                 return View(await _context.Workers.Include(x => x.Position)
                                                   .Include(x => x.Location)
+                                                  .Include(x => x.Projects)
                                                   .OrderBy(x => x.LastName)
                                                   .ToListAsync());
             }
