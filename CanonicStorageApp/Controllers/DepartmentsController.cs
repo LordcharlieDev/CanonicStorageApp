@@ -32,7 +32,7 @@ namespace CanonicStorageApp.Controllers
             departments = await _context.Departments.ToListAsync();
             if(sort == "name_desc")
             {
-                    departments = departments.OrderByDescending(d => d.Name).ToList();
+                departments = departments.OrderByDescending(d => d.Name).ToList();
             }
             else
             {

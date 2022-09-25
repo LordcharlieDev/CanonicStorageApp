@@ -34,7 +34,7 @@ namespace CanonicStorageApp.Controllers
             }
             else if (sort == "budget")
             {
-                projects = projects.OrderByDescending(d => d.Budget).ToList();
+                projects = projects.OrderBy(d => d.Budget).ToList();
             }
             else if (sort == "budget_desc")
             {
