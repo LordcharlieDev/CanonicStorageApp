@@ -74,7 +74,7 @@ namespace CanonicStorageApp.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name"); //add
+            ViewBag.DepartmentList = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name"); //add
             return View();
         }
 
@@ -94,7 +94,7 @@ namespace CanonicStorageApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name"); //add
+            ViewBag.DepartmentList = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name"); //add
             return View(position);
         }
 
@@ -112,7 +112,7 @@ namespace CanonicStorageApp.Controllers
             {
                 return NotFound();
             }
-            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name", position.Department.Id); //add
+            ViewBag.DepartmentList = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name", position.Department.Id); //add
             return View(position);
         }
 
@@ -150,7 +150,7 @@ namespace CanonicStorageApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.message = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name", position.Department.Id);
+            ViewBag.DepartmentList = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name", position.Department.Id);
             return View(position);
         }
 
