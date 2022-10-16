@@ -90,7 +90,7 @@ namespace CanonicStorageApp.Controllers
             {
                 _context.Add(department);
                 await _context.SaveChangesAsync();
-                TempData["toastMsg"] = "New department created successfully!";
+                TempData["toastMsg"] = $"New department [{department.Name}] created successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(department);
@@ -144,7 +144,7 @@ namespace CanonicStorageApp.Controllers
                         throw;
                     }
                 }
-                TempData["toastMsg"] = $"Department {department.Name} saved changes info successfully!";
+                TempData["toastMsg"] = $"Department [{department.Name}] saved changes info successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(department);
@@ -186,7 +186,7 @@ namespace CanonicStorageApp.Controllers
             }
             
             await _context.SaveChangesAsync();
-            TempData["toastMsg"] = $"Department {department?.Name} delete successfully!";
+            TempData["toastMsg"] = $"Department [{department?.Name}] deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
 
