@@ -149,7 +149,7 @@ namespace CanonicStorageApp.Controllers
                         throw;
                     }
                 }
-                TempData["toastMsg"] = $"Changed info about the position [${position.Name}] was saved successfully!";
+                TempData["toastMsg"] = $"Changed info about the position [{position.Name}] was saved successfully!";
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.DepartmentList = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name", position.Department.Id);

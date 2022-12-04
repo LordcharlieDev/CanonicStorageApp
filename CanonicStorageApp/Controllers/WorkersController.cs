@@ -148,6 +148,7 @@ namespace CanonicStorageApp.Controllers
                 worker.Location = await _context.Locations.Where(x => x.Name == worker.Location.Name).FirstOrDefaultAsync(); //add
                 _context.Add(worker);
                 await _context.SaveChangesAsync();
+                TempData["toastMsg"] = $"New worker [{worker.FirstName} {worker.LastName}] created successfully!";
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.PositionList = new SelectList(await _context.Positions.Include(x => x.Department)
@@ -213,6 +214,7 @@ namespace CanonicStorageApp.Controllers
                         throw;
                     }
                 }
+                TempData["toastMsg"] = $"Changed info about the worker [{worker.FirstName} {worker.LastName}] was saved successfully!";
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.PositionList = new SelectList(await _context.Positions.ToListAsync(), "Name", "Name", worker.Position.Id); //add
@@ -259,6 +261,7 @@ namespace CanonicStorageApp.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["toastMsg"] = $"Worker [{worker?.FirstName} {worker?.LastName}] deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
 
