@@ -92,6 +92,7 @@ namespace CanonicStorageApp.Controllers
                                                                 .FirstOrDefaultAsync(); //add
                 _context.Add(position);
                 await _context.SaveChangesAsync();
+                TempData["toastMsg"] = $"New position [{position.Name}] created successfully!";
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.DepartmentList = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name"); //add
@@ -148,6 +149,7 @@ namespace CanonicStorageApp.Controllers
                         throw;
                     }
                 }
+                TempData["toastMsg"] = $"Changed info about the position [${position.Name}] was saved successfully!";
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.DepartmentList = new SelectList(await _context.Departments.ToListAsync(), "Name", "Name", position.Department.Id);
@@ -190,6 +192,7 @@ namespace CanonicStorageApp.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["toastMsg"] = $"Position [{position?.Name}] deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
 

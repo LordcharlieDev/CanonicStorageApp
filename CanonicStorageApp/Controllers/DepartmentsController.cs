@@ -144,7 +144,7 @@ namespace CanonicStorageApp.Controllers
                         throw;
                     }
                 }
-                TempData["toastMsg"] = $"Department [{department.Name}] saved changes info successfully!";
+                TempData["toastMsg"] = $"Changed info about the department [${department.Name}] was saved successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(department);
