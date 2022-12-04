@@ -128,6 +128,7 @@ namespace CanonicStorageApp.Controllers
                 }
                 _context.Add(project);
                 await _context.SaveChangesAsync();
+                TempData["toastMsg"] = $"New project [{project.Name}] created successfully!";
                 return RedirectToAction(nameof(Index));
             }
             projectViewModel.Project.Client = await _context.Clients.Where(x => x.Id == projectViewModel.Project.Client.Id).FirstOrDefaultAsync();
@@ -221,6 +222,7 @@ namespace CanonicStorageApp.Controllers
                         throw;
                     }
                 }
+                TempData["toastMsg"] = $"Changed info about the project [{project.Name}] was saved successfully!";
                 return RedirectToAction(nameof(Index));
             }
             var workers = _context.Workers.ToList();
@@ -267,6 +269,7 @@ namespace CanonicStorageApp.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["toastMsg"] = $"Project [{project?.Name}] deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
 
