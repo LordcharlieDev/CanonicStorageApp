@@ -71,6 +71,7 @@ namespace CanonicStorageApp.Controllers
                         User newUser = new User { Username = registerViewModel.Username, Password = registerViewModel.Password, IsAdmin = registerViewModel.IsAdmin };
                         _context.Add(newUser);
                         await _context.SaveChangesAsync();
+                        TempData["toastMsg"] = $"New user [{newUser.Username}] created successfully!";
                         return RedirectToAction(nameof(Index));
                     }
                     else
@@ -160,6 +161,7 @@ namespace CanonicStorageApp.Controllers
                             throw;
                         }
                     }
+                    TempData["toastMsg"] = $"Changed info about the user [{user.Username}] was saved successfully!";
                     return RedirectToAction(nameof(Index));
                 }
                 return View(user);
@@ -215,6 +217,7 @@ namespace CanonicStorageApp.Controllers
                 }
 
                 await _context.SaveChangesAsync();
+                TempData["toastMsg"] = $"User [{user?.Username}] deleted successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction("Index", "Home");
