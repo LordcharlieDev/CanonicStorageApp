@@ -81,6 +81,7 @@ namespace CanonicStorageApp.Controllers
             {
                 _context.Add(client);
                 await _context.SaveChangesAsync();
+                TempData["toastMsg"] = $"New client [{client.FullName}] created successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(client);
@@ -134,6 +135,7 @@ namespace CanonicStorageApp.Controllers
                         throw;
                     }
                 }
+                TempData["toastMsg"] = $"Changed info about the client [{client.FullName}] was saved successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(client);
@@ -175,6 +177,7 @@ namespace CanonicStorageApp.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["toastMsg"] = $"Client [{client?.FullName}] deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
 
